@@ -17,28 +17,30 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# CORS configuration - allow React frontend
-CORS(app, resources={
-    r"/*": {
-        "origins": ["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
-        "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    }
-})
+# CORS configuration - allow React frontend from Vercel and localhost
+CORS(app, 
+     origins=["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
+     methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+     allow_headers=["Content-Type", "Authorization", "Accept"],
+     supports_credentials=True,
+     expose_headers=["Content-Type"],
+     max_age=3600
+)
 
 init_palette_db()
 
 # Register blueprint for palette routes
 app.register_blueprint(palette_bp)
 
-# Configuration
-app.config['UPLOAD_FOLDER'] = 'uploads'
+# Configuration - Use absolute path for uploads folder
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app.config['UPLOAD_FOLDER'] = os.path.join(BASE_DIR, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = int(os.getenv('MAX_CONTENT_LENGTH', 32 * 1024 * 1024))
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp','jfif'}
 
 # Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+print(f"Upload folder set to: {app.config['UPLOAD_FOLDER']}")
 
 # Initialize services
 image_processor = ImageProcessor()
