@@ -23,12 +23,12 @@ init_palette_db()
 # CORS configuration - allow React frontend
 CORS(app, resources={
     r"/api/*": {
-        "origins": ["http://localhost:3000"],
+        "origins": ["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     },
     r"/uploads/*": {
-        "origins": ["http://localhost:3000"],
+        "origins": ["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
         "methods": ["GET"],
         "allow_headers": ["Content-Type"]
     }
@@ -232,14 +232,14 @@ def generate_layout():
         product_analysis = data.get('product_analysis')
 
         # Build URLs for images
-        image_url = f"http://localhost:5000/uploads/{image_filename}" if image_filename else ""
-        logo_url = f"http://localhost:5000/uploads/{logo_filename}" if logo_filename else None
+        image_url = f"tescobackend-bqdqhfh6hnfvfzbn.eastasia-01.azurewebsites.net/uploads/{image_filename}" if image_filename else ""
+        logo_url = f"tescobackend-bqdqhfh6hnfvfzbn.eastasia-01.azurewebsites.net/uploads/{logo_filename}" if logo_filename else None
 
         background_image_filename = (
             data.get('backgroundImage')
         )
 
-        background_image_url = f"http://localhost:5000/uploads/{background_image_filename}" \
+        background_image_url = f"tescobackend-bqdqhfh6hnfvfzbn.eastasia-01.azurewebsites.net/uploads/{background_image_filename}" \
             if background_image_filename else None
 
         print("Background filename:", background_image_filename)        # ← debug
