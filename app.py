@@ -16,23 +16,18 @@ from utils.palette_db import get_db
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
-init_palette_db()
-
 
 # CORS configuration - allow React frontend
 CORS(app, resources={
-    r"/api/*": {
+    r"/*": {
         "origins": ["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
-    },
-    r"/uploads/*": {
-        "origins": ["http://localhost:3000", "https://tesco-frontend-psi.vercel.app"],
-        "methods": ["GET"],
-        "allow_headers": ["Content-Type"]
+        "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
     }
 })
+
+init_palette_db()
 
 # Register blueprint for palette routes
 app.register_blueprint(palette_bp)
